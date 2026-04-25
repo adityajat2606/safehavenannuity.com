@@ -1,93 +1,280 @@
-import Link from "next/link";
-import { PageShell } from "@/components/shared/page-shell";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { mockTeamMembers } from "@/data/mock-data";
-import { SITE_CONFIG } from "@/lib/site-config";
+import Link from 'next/link'
+import type { Metadata } from 'next'
+import {
+  Award,
+  BadgeCheck,
+  ArrowRight,
+  HeartHandshake,
+  ShieldCheck,
+  Target,
+  TrendingUp,
+  Users,
+} from 'lucide-react'
+import { NavbarShell } from '@/components/shared/navbar-shell'
+import { Footer } from '@/components/shared/footer'
+import { SITE_CONFIG } from '@/lib/site-config'
 
-const highlights = [
-  { label: "Creators onboarded", value: "12k+" },
-  { label: "Bookmarks shared", value: "180k" },
-  { label: "Listings published", value: "8.6k" },
-];
+export const metadata: Metadata = {
+  title: `About ${SITE_CONFIG.name}`,
+  description: `Learn more about ${SITE_CONFIG.name}, your trusted directory for verified annuity providers and financial services businesses.`,
+}
 
-const values = [
-  { title: "Curated by people", description: "We believe trusted recommendations beat endless feeds." },
-  { title: "Designed for focus", description: "Clear, calm UI helps you find the next best resource fast." },
-  { title: "Built to share", description: "Collections make collaboration and knowledge flow effortless." },
-];
+const STATS = [
+  { value: '10+', label: 'Years Of Experience' },
+  { value: '13K+', label: 'Happy Customers' },
+  { value: '500+', label: 'Verified Providers' },
+  { value: '4.9★', label: 'Average Rating' },
+]
+
+const VALUES = [
+  {
+    icon: ShieldCheck,
+    title: 'Trust First',
+    description:
+      'Every business on our directory is vetted and verified so you know you are talking to the right people.',
+  },
+  {
+    icon: HeartHandshake,
+    title: 'Customer Focused',
+    description:
+      'We put your goals first — simple comparisons, honest advice, and no pushy salespeople.',
+  },
+  {
+    icon: Target,
+    title: 'Clear Outcomes',
+    description:
+      'Our process is built to get you predictable income plans and peace of mind for retirement.',
+  },
+  {
+    icon: TrendingUp,
+    title: 'Always Improving',
+    description:
+      'We continuously refine the platform based on user feedback and industry best practices.',
+  },
+]
+
+const TEAM = [
+  {
+    name: 'Margaret Wilson',
+    role: 'Founder & CEO',
+    bio: 'Licensed financial advisor with 20+ years guiding families through retirement planning.',
+    avatar:
+      'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80',
+  },
+  {
+    name: 'David Martinez',
+    role: 'Head Of Provider Relations',
+    bio: 'Connects clients with the most suitable providers in our verified listing network.',
+    avatar:
+      'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80',
+  },
+  {
+    name: 'Sarah Chen',
+    role: 'Chief Operations Officer',
+    bio: 'Keeps the platform fast, secure, and simple to use for every listed business.',
+    avatar:
+      'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=300&q=80',
+  },
+]
 
 export default function AboutPage() {
   return (
-    <PageShell
-      title={`About ${SITE_CONFIG.name}`}
-      description={`${SITE_CONFIG.name} is a modern platform for creators, communities, and curated business discovery.`}
-      actions={
-        <>
-          <Button variant="outline" asChild>
-            <Link href="/team">Meet the Team</Link>
-          </Button>
-          <Button asChild>
-            <Link href="/contact">Contact Us</Link>
-          </Button>
-        </>
-      }
-    >
-      <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-        <Card className="border-border bg-card">
-          <CardContent className="space-y-4 p-6">
-            <Badge variant="secondary">Our Story</Badge>
-            <h2 className="text-2xl font-semibold text-foreground">
-              A single home for knowledge, discovery, and community.
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              {SITE_CONFIG.name} brings together publishing, listings, and social bookmarking so teams can move faster
-              and keep their best resources close.
+    <div className="min-h-screen bg-white text-slate-900">
+      <NavbarShell />
+
+      {/* Hero */}
+      <section className="relative overflow-hidden bg-[#F5F1E8]">
+        <div className="absolute inset-0 opacity-40 pointer-events-none" aria-hidden>
+          <div className="absolute top-10 left-10 h-56 w-56 rounded-full bg-[#FFC531]/25 blur-3xl" />
+          <div className="absolute bottom-10 right-10 h-72 w-72 rounded-full bg-[#1B2A5B]/10 blur-3xl" />
+        </div>
+        <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#1B2A5B]/15 bg-white/80 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#1B2A5B]">
+              About {SITE_CONFIG.name}
+            </div>
+            <h1 className="mt-5 text-4xl font-extrabold leading-tight tracking-tight text-[#1B2A5B] sm:text-5xl lg:text-6xl">
+              Helping Families Retire
+              <br />
+              With Confidence Since 2015
+            </h1>
+            <p className="mt-6 max-w-2xl text-base leading-7 text-slate-600">
+              {SITE_CONFIG.name} is a trusted directory of licensed annuity providers and financial services businesses.
+              Our mission is simple — connect you with the right provider, without the noise.
             </p>
-            <div className="grid gap-4 sm:grid-cols-3">
-              {highlights.map((item) => (
-                <div key={item.label} className="rounded-lg border border-border bg-secondary/40 p-4">
-                  <div className="text-2xl font-semibold text-foreground">{item.value}</div>
-                  <div className="text-xs text-muted-foreground">{item.label}</div>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link
+                href="/contact"
+                className="inline-flex items-center gap-2 rounded-full bg-[#FFC531] px-6 py-3 text-sm font-bold text-[#1B2A5B] shadow-lg shadow-[#FFC531]/30 hover:bg-[#f3b91d]"
+              >
+                Talk To An Advisor
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link
+                href="/listings"
+                className="inline-flex items-center gap-2 rounded-full border border-[#1B2A5B]/20 bg-white px-6 py-3 text-sm font-semibold text-[#1B2A5B] hover:bg-slate-50"
+              >
+                Browse Listings
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats bar */}
+      <section className="mx-auto -mt-10 max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="relative z-10 rounded-3xl bg-[#1B2A5B] p-8 shadow-xl">
+          <div className="grid grid-cols-2 gap-6 text-white sm:grid-cols-4">
+            {STATS.map((s) => (
+              <div key={s.label} className="text-center">
+                <div className="text-3xl font-extrabold text-[#FFC531] sm:text-4xl">{s.value}</div>
+                <div className="mt-1 text-xs font-semibold uppercase tracking-wider text-slate-300">{s.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Story */}
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+          <div className="relative grid grid-cols-2 gap-4">
+            <img
+              src="https://images.unsplash.com/photo-1556155092-490a1ba16284?auto=format&fit=crop&w=700&q=80"
+              alt="Team collaborating"
+              className="aspect-[4/5] w-full rounded-[2rem] object-cover"
+            />
+            <div className="space-y-4 pt-10">
+              <img
+                src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=700&q=80"
+                alt="Business meeting"
+                className="aspect-square w-full rounded-[2rem] object-cover"
+              />
+              <div className="flex flex-col items-center justify-center rounded-[2rem] bg-[#FFC531] p-6 text-center">
+                <Award className="h-10 w-10 text-[#1B2A5B]" />
+                <div className="mt-3 text-2xl font-extrabold text-[#1B2A5B]">A+ BBB</div>
+                <div className="text-xs font-semibold text-[#1B2A5B]/80">Accredited</div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-slate-600">
+              Our Story
+            </div>
+            <h2 className="mt-5 text-3xl font-extrabold leading-tight tracking-tight text-[#1B2A5B] sm:text-4xl">
+              Built On Trust. Driven By Real Results.
+            </h2>
+            <p className="mt-5 text-slate-600 leading-7">
+              What started as a small team helping local families compare annuity providers has grown into a
+              nationwide directory of verified financial services businesses. We believe retirement planning
+              should feel clear, calm, and fully on your terms.
+            </p>
+            <p className="mt-4 text-slate-600 leading-7">
+              Today we&apos;re proud to partner with hundreds of licensed providers and support thousands of
+              customers every month through honest listings, transparent comparisons, and real human guidance.
+            </p>
+
+            <div className="mt-8 grid gap-4 sm:grid-cols-2">
+              {[
+                'Licensed and certified advisors',
+                'Verified provider network',
+                'Transparent, no-pressure process',
+                '24/7 customer assistance',
+              ].map((item) => (
+                <div key={item} className="flex items-start gap-3">
+                  <BadgeCheck className="mt-0.5 h-5 w-5 shrink-0 text-[#FFC531]" />
+                  <span className="text-sm font-medium text-slate-700">{item}</span>
                 </div>
               ))}
             </div>
-          </CardContent>
-        </Card>
-        <div className="space-y-4">
-          {values.map((value) => (
-            <Card key={value.title} className="border-border bg-card">
-              <CardContent className="p-6">
-                <h3 className="text-lg font-semibold text-foreground">{value.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{value.description}</p>
-              </CardContent>
-            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Values */}
+      <section className="bg-[#F5F1E8]">
+        <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
+            <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-slate-600">
+              What We Stand For
+            </div>
+            <h2 className="mt-5 text-3xl font-extrabold tracking-tight text-[#1B2A5B] sm:text-4xl">
+              The Values That Guide Every Decision
+            </h2>
+          </div>
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {VALUES.map((v) => (
+              <div
+                key={v.title}
+                className="rounded-3xl bg-white p-7 shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all"
+              >
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#FFC531]/20">
+                  <v.icon className="h-7 w-7 text-[#1B2A5B]" />
+                </div>
+                <h3 className="mt-5 text-lg font-bold text-[#1B2A5B]">{v.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-600">{v.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Team */}
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-2xl text-center">
+          <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-slate-600">
+            <Users className="h-3.5 w-3.5" />
+            Meet The Team
+          </div>
+          <h2 className="mt-5 text-3xl font-extrabold tracking-tight text-[#1B2A5B] sm:text-4xl">
+            Experts Dedicated To Your Future
+          </h2>
+        </div>
+        <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {TEAM.map((m) => (
+            <div
+              key={m.name}
+              className="group overflow-hidden rounded-3xl bg-white shadow-sm border border-slate-100 hover:shadow-xl transition-all"
+            >
+              <div className="relative aspect-[4/5] overflow-hidden">
+                <img src={m.avatar} alt={m.name} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              </div>
+              <div className="p-6">
+                <h3 className="text-lg font-bold text-[#1B2A5B]">{m.name}</h3>
+                <p className="mt-0.5 text-sm font-semibold text-[#FFC531]">{m.role}</p>
+                <p className="mt-3 text-sm leading-6 text-slate-600">{m.bio}</p>
+              </div>
+            </div>
           ))}
         </div>
-      </div>
+      </section>
 
-      <div className="mt-10 grid gap-6 md:grid-cols-3">
-        {mockTeamMembers.map((member) => (
-          <Card key={member.id} className="border-border bg-card transition-transform hover:-translate-y-1">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-3">
-                <Avatar className="h-12 w-12">
-                  <AvatarImage src={member.avatar} alt={member.name} />
-                  <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="text-sm font-semibold text-foreground">{member.name}</p>
-                  <p className="text-xs text-muted-foreground">{member.role}</p>
-                </div>
-              </div>
-              <p className="mt-3 text-sm text-muted-foreground">{member.bio}</p>
-              <p className="mt-3 text-xs text-muted-foreground">{member.location}</p>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-    </PageShell>
-  );
+      {/* CTA */}
+      <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
+        <div className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-[#1B2A5B] via-[#26366E] to-[#1B2A5B] p-10 sm:p-14">
+          <div className="absolute -top-20 -right-20 h-60 w-60 rounded-full bg-[#FFC531]/20 blur-3xl" />
+          <div className="relative z-10 flex flex-col items-start gap-6 lg:flex-row lg:items-center lg:justify-between">
+            <div className="max-w-2xl">
+              <h2 className="text-3xl font-extrabold leading-tight text-white sm:text-4xl">
+                Ready To Plan Your Retirement?
+              </h2>
+              <p className="mt-4 text-slate-300">
+                Connect with a verified advisor today. It&apos;s free, fast, and there is zero pressure to commit.
+              </p>
+            </div>
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-2 rounded-full bg-[#FFC531] px-7 py-4 text-sm font-bold text-[#1B2A5B] hover:bg-[#f3b91d]"
+            >
+              Get Started
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+    </div>
+  )
 }

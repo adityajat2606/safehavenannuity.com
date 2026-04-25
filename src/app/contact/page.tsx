@@ -1,113 +1,258 @@
-import { Building2, FileText, Image as ImageIcon, Mail, MapPin, Phone, Sparkles, Bookmark } from 'lucide-react'
+'use client'
+
+import { FormEvent, useState } from 'react'
+import Link from 'next/link'
+import { Clock, Facebook, Instagram, Linkedin, Mail, MapPin, MessageCircle, Phone, Send, Twitter } from 'lucide-react'
 import { NavbarShell } from '@/components/shared/navbar-shell'
 import { Footer } from '@/components/shared/footer'
 import { SITE_CONFIG } from '@/lib/site-config'
-import { getFactoryState } from '@/design/factory/get-factory-state'
-import { getProductKind } from '@/design/factory/get-product-kind'
-import { CONTACT_PAGE_OVERRIDE_ENABLED, ContactPageOverride } from '@/overrides/contact-page'
 
-function getTone(kind: ReturnType<typeof getProductKind>) {
-  if (kind === 'directory') {
-    return {
-      shell: 'bg-[#f8fbff] text-slate-950',
-      panel: 'border border-slate-200 bg-white',
-      soft: 'border border-slate-200 bg-slate-50',
-      muted: 'text-slate-600',
-      action: 'bg-slate-950 text-white hover:bg-slate-800',
-    }
-  }
-  if (kind === 'editorial') {
-    return {
-      shell: 'bg-[#fbf6ee] text-[#241711]',
-      panel: 'border border-[#dcc8b7] bg-[#fffdfa]',
-      soft: 'border border-[#e6d6c8] bg-[#fff4e8]',
-      muted: 'text-[#6e5547]',
-      action: 'bg-[#241711] text-[#fff1e2] hover:bg-[#3a241b]',
-    }
-  }
-  if (kind === 'visual') {
-    return {
-      shell: 'bg-[#07101f] text-white',
-      panel: 'border border-white/10 bg-white/6',
-      soft: 'border border-white/10 bg-white/5',
-      muted: 'text-slate-300',
-      action: 'bg-[#8df0c8] text-[#07111f] hover:bg-[#77dfb8]',
-    }
-  }
-  return {
-    shell: 'bg-[#f7f1ea] text-[#261811]',
-    panel: 'border border-[#ddcdbd] bg-[#fffaf4]',
-    soft: 'border border-[#e8dbce] bg-[#f3e8db]',
-    muted: 'text-[#71574a]',
-    action: 'bg-[#5b2b3b] text-[#fff0f5] hover:bg-[#74364b]',
-  }
-}
+const CONTACT_ITEMS = [
+  {
+    icon: Phone,
+    title: 'Call Us',
+    lines: ['(907) 555-0101', '(234) 345-4574'],
+    sub: 'Mon – Fri, 9am to 6pm',
+  },
+  {
+    icon: Mail,
+    title: 'Email Us',
+    lines: [`hello@${SITE_CONFIG.domain}`, `support@${SITE_CONFIG.domain}`],
+    sub: 'We respond within 24 hours',
+  },
+  {
+    icon: MapPin,
+    title: 'Visit Us',
+    lines: ['2525 Dancing Dove Lane', 'Long Island City, NY 11101'],
+    sub: 'Schedule an appointment',
+  },
+  {
+    icon: Clock,
+    title: 'Business Hours',
+    lines: ['Mon – Fri: 9am – 6pm', 'Sat: 9am – 3pm'],
+    sub: '24/7 Emergency Line Available',
+  },
+]
+
+const SOCIAL = [
+  { icon: Facebook, href: 'https://facebook.com', label: 'Facebook' },
+  { icon: Instagram, href: 'https://instagram.com', label: 'Instagram' },
+  { icon: Linkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
+  { icon: Twitter, href: 'https://twitter.com', label: 'Twitter' },
+]
 
 export default function ContactPage() {
-  if (CONTACT_PAGE_OVERRIDE_ENABLED) {
-    return <ContactPageOverride />
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
+  const [subject, setSubject] = useState('')
+  const [message, setMessage] = useState('')
+  const [sent, setSent] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setError(null)
+    if (!name || !email || !message) {
+      setError('Please fill in your name, email, and message.')
+      return
+    }
+    if (!/^\S+@\S+\.\S+$/.test(email)) {
+      setError('Please enter a valid email address.')
+      return
+    }
+    setSent(true)
+    setName('')
+    setEmail('')
+    setPhone('')
+    setSubject('')
+    setMessage('')
   }
 
-  const { recipe } = getFactoryState()
-  const productKind = getProductKind(recipe)
-  const tone = getTone(productKind)
-  const lanes =
-    productKind === 'directory'
-      ? [
-          { icon: Building2, title: 'Business onboarding', body: 'Add listings, verify operational details, and bring your business surface live quickly.' },
-          { icon: Phone, title: 'Partnership support', body: 'Talk through bulk publishing, local growth, and operational setup questions.' },
-          { icon: MapPin, title: 'Coverage requests', body: 'Need a new geography or category lane? We can shape the directory around it.' },
-        ]
-      : productKind === 'editorial'
-        ? [
-            { icon: FileText, title: 'Editorial submissions', body: 'Pitch essays, columns, and long-form ideas that fit the publication.' },
-            { icon: Mail, title: 'Newsletter partnerships', body: 'Coordinate sponsorships, collaborations, and issue-level campaigns.' },
-            { icon: Sparkles, title: 'Contributor support', body: 'Get help with voice, formatting, and publication workflow questions.' },
-          ]
-        : productKind === 'visual'
-          ? [
-              { icon: ImageIcon, title: 'Creator collaborations', body: 'Discuss gallery launches, creator features, and visual campaigns.' },
-              { icon: Sparkles, title: 'Licensing and use', body: 'Reach out about usage rights, commercial requests, and visual partnerships.' },
-              { icon: Mail, title: 'Media kits', body: 'Request creator decks, editorial support, or visual feature placement.' },
-            ]
-          : [
-              { icon: Bookmark, title: 'Collection submissions', body: 'Suggest resources, boards, and links that deserve a place in the library.' },
-              { icon: Mail, title: 'Resource partnerships', body: 'Coordinate curation projects, reference pages, and link programs.' },
-              { icon: Sparkles, title: 'Curator support', body: 'Need help organizing shelves, collections, or profile-connected boards?' },
-            ]
-
   return (
-    <div className={`min-h-screen ${tone.shell}`}>
+    <div className="min-h-screen bg-white text-slate-900">
       <NavbarShell />
-      <main className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        <section className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] opacity-70">Contact {SITE_CONFIG.name}</p>
-            <h1 className="mt-4 text-5xl font-semibold tracking-[-0.05em]">A support page that matches the product, not a generic contact form.</h1>
-            <p className={`mt-5 max-w-2xl text-sm leading-8 ${tone.muted}`}>Tell us what you are trying to publish, fix, or launch. We will route it through the right lane instead of forcing every request into the same support bucket.</p>
-            <div className="mt-8 space-y-4">
-              {lanes.map((lane) => (
-                <div key={lane.title} className={`rounded-[1.6rem] p-5 ${tone.soft}`}>
-                  <lane.icon className="h-5 w-5" />
-                  <h2 className="mt-3 text-xl font-semibold">{lane.title}</h2>
-                  <p className={`mt-2 text-sm leading-7 ${tone.muted}`}>{lane.body}</p>
-                </div>
-              ))}
-            </div>
-          </div>
 
-          <div className={`rounded-[2rem] p-7 ${tone.panel}`}>
-            <h2 className="text-2xl font-semibold">Send a message</h2>
-            <form className="mt-6 grid gap-4">
-              <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="Your name" />
-              <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="Email address" />
-              <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="What do you need help with?" />
-              <textarea className="min-h-[180px] rounded-2xl border border-current/10 bg-transparent px-4 py-3 text-sm" placeholder="Share the full context so we can respond with the right next step." />
-              <button type="submit" className={`inline-flex h-12 items-center justify-center rounded-full px-6 text-sm font-semibold ${tone.action}`}>Send message</button>
+      {/* Hero */}
+      <section className="relative overflow-hidden bg-[#F5F1E8]">
+        <div className="absolute inset-0 opacity-40 pointer-events-none" aria-hidden>
+          <div className="absolute top-10 right-10 h-72 w-72 rounded-full bg-[#FFC531]/25 blur-3xl" />
+          <div className="absolute bottom-10 left-10 h-56 w-56 rounded-full bg-[#1B2A5B]/10 blur-3xl" />
+        </div>
+        <div className="relative mx-auto max-w-7xl px-4 py-16 text-center sm:px-6 lg:px-8 lg:py-20">
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#1B2A5B]/15 bg-white/80 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#1B2A5B]">
+            <MessageCircle className="h-3.5 w-3.5" />
+            Get In Touch
+          </div>
+          <h1 className="mt-5 text-4xl font-extrabold leading-tight tracking-tight text-[#1B2A5B] sm:text-5xl lg:text-6xl">
+            We&apos;d Love To Hear From You
+          </h1>
+          <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-slate-600">
+            Have a question about our listings? Looking to add your business? Need retirement advice?
+            Our team is ready to help — pick the method that works best for you.
+          </p>
+        </div>
+      </section>
+
+      {/* Contact cards */}
+      <section className="mx-auto -mt-12 max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="relative z-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {CONTACT_ITEMS.map((item) => (
+            <div
+              key={item.title}
+              className="rounded-3xl bg-white p-7 shadow-lg border border-slate-100 hover:shadow-2xl transition-all"
+            >
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#FFC531]/20">
+                <item.icon className="h-7 w-7 text-[#1B2A5B]" />
+              </div>
+              <h3 className="mt-5 text-lg font-bold text-[#1B2A5B]">{item.title}</h3>
+              <div className="mt-3 space-y-1">
+                {item.lines.map((l) => (
+                  <p key={l} className="text-sm font-semibold text-slate-700">{l}</p>
+                ))}
+              </div>
+              <p className="mt-3 text-xs text-slate-500">{item.sub}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Form + Map */}
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="rounded-[2rem] bg-white p-8 shadow-lg border border-slate-100 sm:p-10">
+            <div className="text-[11px] font-bold uppercase tracking-widest text-slate-500">Send A Message</div>
+            <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-[#1B2A5B] sm:text-4xl">
+              Tell Us How We Can Help
+            </h2>
+            <p className="mt-3 text-sm text-slate-600">
+              Fill out the form and one of our advisors will reach out within 24 hours.
+            </p>
+
+            <form onSubmit={handleSubmit} className="mt-8 grid gap-5">
+              <div className="grid gap-5 sm:grid-cols-2">
+                <div>
+                  <label className="block text-sm font-semibold text-[#1B2A5B]">Full Name</label>
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Jane Doe"
+                    className="mt-2 h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm outline-none focus:border-[#1B2A5B] focus:bg-white focus:ring-2 focus:ring-[#FFC531]/40"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-[#1B2A5B]">Email Address</label>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="you@example.com"
+                    className="mt-2 h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm outline-none focus:border-[#1B2A5B] focus:bg-white focus:ring-2 focus:ring-[#FFC531]/40"
+                  />
+                </div>
+              </div>
+              <div className="grid gap-5 sm:grid-cols-2">
+                <div>
+                  <label className="block text-sm font-semibold text-[#1B2A5B]">Phone (optional)</label>
+                  <input
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="(123) 456-7890"
+                    className="mt-2 h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm outline-none focus:border-[#1B2A5B] focus:bg-white focus:ring-2 focus:ring-[#FFC531]/40"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-[#1B2A5B]">Subject</label>
+                  <input
+                    type="text"
+                    value={subject}
+                    onChange={(e) => setSubject(e.target.value)}
+                    placeholder="How can we help?"
+                    className="mt-2 h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm outline-none focus:border-[#1B2A5B] focus:bg-white focus:ring-2 focus:ring-[#FFC531]/40"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-[#1B2A5B]">Message</label>
+                <textarea
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  rows={5}
+                  placeholder="Tell us a little about what you're looking for..."
+                  className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:border-[#1B2A5B] focus:bg-white focus:ring-2 focus:ring-[#FFC531]/40"
+                />
+              </div>
+
+              {error ? (
+                <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>
+              ) : null}
+              {sent ? (
+                <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+                  Thanks for reaching out! We&apos;ll get back to you within 24 hours.
+                </div>
+              ) : null}
+
+              <button
+                type="submit"
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#FFC531] px-6 text-sm font-bold text-[#1B2A5B] shadow-lg shadow-[#FFC531]/30 hover:bg-[#f3b91d]"
+              >
+                Send Message
+                <Send className="h-4 w-4" />
+              </button>
             </form>
           </div>
-        </section>
-      </main>
+
+          <div className="space-y-6">
+            <div className="overflow-hidden rounded-[2rem] border border-slate-100 shadow-lg">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.222222!2d-73.948!3d40.747!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDDCsDQ0JzQ5LjIiTiA3M8KwNTYnNTIuOCJX!5e0!3m2!1sen!2sus!4v1600000000"
+                width="100%"
+                height="320"
+                style={{ border: 0 }}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Office location"
+              />
+            </div>
+
+            <div className="rounded-[2rem] bg-[#1B2A5B] p-8 text-white shadow-lg">
+              <h3 className="text-xl font-bold">Connect On Social</h3>
+              <p className="mt-2 text-sm text-slate-300">
+                Follow along for tips, provider spotlights, and the latest updates.
+              </p>
+              <div className="mt-5 flex gap-3">
+                {SOCIAL.map((s) => (
+                  <a
+                    key={s.label}
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={s.label}
+                    className="flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-[#FFC531] hover:bg-[#FFC531] hover:text-[#1B2A5B] transition-colors"
+                  >
+                    <s.icon className="h-5 w-5" />
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            <Link
+              href="/help"
+              className="block rounded-[2rem] border border-slate-200 bg-[#F5F1E8] p-8 hover:shadow-lg transition-all"
+            >
+              <div className="text-[11px] font-bold uppercase tracking-widest text-slate-500">Need Answers Faster?</div>
+              <h3 className="mt-2 text-xl font-bold text-[#1B2A5B]">Visit Our Help Centre</h3>
+              <p className="mt-2 text-sm text-slate-600">Browse common questions and detailed guides before reaching out.</p>
+              <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[#1B2A5B]">
+                Open Help Centre →
+              </span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <Footer />
     </div>
   )
