@@ -8,7 +8,6 @@ import {
   ShieldCheck,
   Target,
   TrendingUp,
-  Users,
 } from 'lucide-react'
 import { NavbarShell } from '@/components/shared/navbar-shell'
 import { Footer } from '@/components/shared/footer'
@@ -53,29 +52,6 @@ const VALUES = [
   },
 ]
 
-const TEAM = [
-  {
-    name: 'Margaret Wilson',
-    role: 'Founder & CEO',
-    bio: 'Licensed financial advisor with 20+ years guiding families through retirement planning.',
-    avatar:
-      'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80',
-  },
-  {
-    name: 'David Martinez',
-    role: 'Head Of Provider Relations',
-    bio: 'Connects clients with the most suitable providers in our verified listing network.',
-    avatar:
-      'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80',
-  },
-  {
-    name: 'Sarah Chen',
-    role: 'Chief Operations Officer',
-    bio: 'Keeps the platform fast, secure, and simple to use for every listed business.',
-    avatar:
-      'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=300&q=80',
-  },
-]
 
 export default function AboutPage() {
   return (
@@ -217,36 +193,6 @@ export default function AboutPage() {
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Team */}
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-slate-600">
-            <Users className="h-3.5 w-3.5" />
-            Meet The Team
-          </div>
-          <h2 className="mt-5 text-3xl font-extrabold tracking-tight text-[#1B2A5B] sm:text-4xl">
-            Experts Dedicated To Your Future
-          </h2>
-        </div>
-        <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {TEAM.map((m) => (
-            <div
-              key={m.name}
-              className="group overflow-hidden rounded-3xl bg-white shadow-sm border border-slate-100 hover:shadow-xl transition-all"
-            >
-              <div className="relative aspect-[4/5] overflow-hidden">
-                <img src={m.avatar} alt={m.name} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500" />
-              </div>
-              <div className="p-6">
-                <h3 className="text-lg font-bold text-[#1B2A5B]">{m.name}</h3>
-                <p className="mt-0.5 text-sm font-semibold text-[#FFC531]">{m.role}</p>
-                <p className="mt-3 text-sm leading-6 text-slate-600">{m.bio}</p>
-              </div>
-            </div>
-          ))}
         </div>
       </section>
 
