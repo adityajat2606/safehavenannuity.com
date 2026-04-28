@@ -17,7 +17,7 @@ const CONTACT_ITEMS = [
   {
     icon: Mail,
     title: 'Email Us',
-    lines: [`hello@${SITE_CONFIG.domain}`, `support@${SITE_CONFIG.domain}`],
+    lines: [process.env.NEXT_PUBLIC_CONTACT_EMAIL_1 || 'hello@safehavenannuity.com', process.env.NEXT_PUBLIC_CONTACT_EMAIL_2 || 'support@safehavenannuity.com'],
     sub: 'We respond within 24 hours',
   },
   {
